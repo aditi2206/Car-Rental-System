@@ -10,7 +10,7 @@ import lombok.ToString;
 @Data
 @ToString
 public class CarDto {
-    private Long carId;
+    private Long car_id;
     private String make;
     private String model;
     private Integer year;

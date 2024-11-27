@@ -7,9 +7,9 @@ import com.carRental.CarRental.repository.BookingsRepository;
 import com.carRental.CarRental.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,14 +25,14 @@ public class UserService {
     @Autowired
     BookingsRepository bookingsRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+  //  @Autowired
+    //private PasswordEncoder passwordEncoder;
 
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+  //  @Autowired
+    //private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserDto registerUser(UserDto userDto){
         if(userRepository.existsByUsername(userDto.getUsername())){
@@ -42,14 +42,14 @@ public class UserService {
             throw new RuntimeException("Username and password required!");
         }
 
-        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+        //String encodedPassword = passwordEncoder.encode(userDto.getPassword());
 
         User new_user = new User();
         new_user.setFirst_name(userDto.getFirst_name());
         new_user.setLast_name(userDto.getLast_name());
         new_user.setEmail(userDto.getEmail());
         new_user.setUsername(userDto.getUsername());
-        new_user.setPassword(encodedPassword);
+        new_user.setPassword(userDto.getPassword());
 
         userRepository.save(new_user);
 
@@ -58,9 +58,9 @@ public class UserService {
 
     public String loginUser(UserLoginDto userLoginDto){
         User user = userRepository.findByUsername(userLoginDto.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+                .orElseThrow(() -> new RuntimeException("User not found!"));
 
-        if(bCryptPasswordEncoder.matches(userLoginDto.getPassword(), user.getPassword())){
+        if(userLoginDto.getPassword().equals(user.getPassword())){
             return "Login successful!";
         }
         else{

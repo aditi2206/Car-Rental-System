@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookingRequestDto {
-    private Long carId;
+    private Long car_id;
     private Long userId;
     private LocalDate startDate;
     private LocalDate endDate;

@@ -12,14 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/bookings")
-public class BookingController {
-    @Autowired
-    private BookingService bookingService;
+@RequestMapping("/bookings")
+public class BookingsController {
 
-    @PostMapping("/create")
-    public ResponseEntity<BookingResponseDto> createBooking(@RequestBody BookingRequestDto bookingRequestDto) {
-        BookingResponseDto bookingResponseDto = bookingService.createBooking(bookingRequestDto);
-        return new ResponseEntity<>(bookingResponseDto, HttpStatus.CREATED);
+    @Autowired
+    BookingService bookingService;
+    @PostMapping("/book")
+    public ResponseEntity<BookingResponseDto> bookCar(@RequestBody BookingRequestDto bookingRequest) {
+        BookingResponseDto response = bookingService.bookCar(bookingRequest);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+
 }

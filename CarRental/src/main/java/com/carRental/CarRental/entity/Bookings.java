@@ -14,6 +14,9 @@ public class Bookings {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long booking_id;
+
+    //bookingDate
+
     @Column(nullable = false)
     private LocalDate startDate;
 

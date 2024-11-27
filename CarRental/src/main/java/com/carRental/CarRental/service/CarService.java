@@ -2,16 +2,24 @@ package com.carRental.CarRental.service;
 
 import com.carRental.CarRental.dto.CarDto;
 import com.carRental.CarRental.entity.Car;
+import com.carRental.CarRental.repository.BookedCarRepository;
 import com.carRental.CarRental.repository.CarRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CarService {
 
     @Autowired
     CarRepository carRepository;
+
+    @Autowired
+    BookedCarRepository bookedCarRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -34,7 +42,7 @@ public class CarService {
         car.setDescription(carDto.getDescription());
         car.setAvailable(true);
 
-        carRepository.save(car);
+       car =  carRepository.save(car);
 
         return modelMapper.map(car, CarDto.class);
 
@@ -86,5 +94,19 @@ public class CarService {
           carRepository.save(car);
 
           return modelMapper.map(car, CarDto.class);
+    }
+
+    public List<Car> searchAvailableCars(LocalDate startDate, LocalDate endDate){
+        List<Car> bookedCars = bookedCarRepository.findBookedCarsWithinDateRange(startDate, endDate);
+        List<CarDto> carListOfUnBookedCars = new ArrayList<>();
+        //1,3
+
+        List<Car> allCars = carRepository.findAll();
+        //1,2,3,4
+
+        allCars.removeAll(bookedCars);
+
+        return allCars;
+        //2,4
     }
 }
